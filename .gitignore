@@ -1,0 +1,46 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# --- CRITICAL: Security Keys ---
+*.pem
+key.pem
+cert.pem
+
+# --- Python Environment & Cache ---
+.venv/
+__pycache__/
+src/**/__pycache__/
+*.py[cod]
+
+# --- Editor/Tools ---
+.vscode/
+list_models.py
+.gitignore.txt
+
+# --- Environment Variables (if you create them later) ---
+.env
+
+# --- Python Dependency Files (if you use pip) ---
+# requirements.txt

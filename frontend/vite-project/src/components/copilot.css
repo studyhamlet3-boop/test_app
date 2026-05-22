@@ -1,0 +1,60 @@
+.coPilot_container{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    background: #1f2430;
+    border-radius: 8px;
+    inset: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* top white box */
+.response_box{
+    height: 90%;
+    width: 100%;
+    background: #1f2430;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 6px;
+}
+
+/* bottom white box */
+.input_box{
+    height: 10%;
+    width: 100%;
+    background: #1f2430;
+    border-radius: 6px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* text input */
+.input_box input{
+    flex: 1;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 0 12px;
+    font-size: 16px;
+    outline: none;
+}
+
+/* focus effect */
+.input_box input:focus{
+    border-color: #666;
+}
+
+
+.input_box button:hover{
+    background: #222;
+}
+.reply_display{
+    white-space: pre-wrap;
+}
