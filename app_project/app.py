@@ -4,7 +4,8 @@ from src.controllers.simple_root import router as root_router
 # middleware import
 from fastapi.middleware.cors import CORSMiddleware
 from src.middleware.logger_mid import log_request
-
+# Temporary imports
+from src.data.genai_cont_db import init_pool,close_pool
 
 app = FastAPI()
 
@@ -18,4 +19,26 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.on_event("startup")
+async def startup_event():
+    await init_pool()  # Safely creates the global pool ONCE before any requests arrive
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    # Reach out to your global pool and close it cleanly
+    await close_pool()
 # app.middleware("http")(log_request)
+
+
+# #1. Define the lifespan setup/teardown wrapper
+# @asynccontextmanager
+# async def lifespan(app: FastAPI):
+#     # This runs ON STARTUP
+#     await init_pool()  
+#     yield
+#     # This runs ON SHUTDOWN
+#     await close_pool() 
+
+# #2. Pass lifespan directly into your FastAPI initialization
+# app = FastAPI(lifespan=lifespan)
