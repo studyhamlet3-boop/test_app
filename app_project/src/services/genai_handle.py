@@ -1,10 +1,12 @@
 import src.models.gemini_client as gemini_client
 import src.data.genai_cont_db as genai_cont_db
 
+# yields the stream.
+# manages db storage of the conversation history.
 async def genai_req(prompt: str):
     full_response = ""
-#-----------Get And Read The Generator----------------
 
+#-----------Get And Read The Generator----------------
     async for chunk in await gemini_client.ask_gemini(prompt):
 
 #-----------Capture The Whole Stream----------------

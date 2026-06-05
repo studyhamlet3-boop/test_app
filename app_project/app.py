@@ -5,7 +5,7 @@ from src.controllers.simple_root import router as root_router
 from fastapi.middleware.cors import CORSMiddleware
 from src.middleware.logger_mid import log_request
 # Temporary imports
-from src.data.genai_cont_db import init_pool,close_pool
+from src.data.genai_cont_db import clean_db, init_pool,close_pool
 
 app = FastAPI()
 
@@ -23,6 +23,7 @@ app.add_middleware(
 @app.on_event("startup")
 async def startup_event():
     await init_pool()  # Safely creates the global pool ONCE before any requests arrive
+    await clean_db()   # Clear the chat_logs table on startup (optional, for testing purposes)
 
 @app.on_event("shutdown")
 async def shutdown_event():
