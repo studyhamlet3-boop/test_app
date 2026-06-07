@@ -1,8 +1,9 @@
 import asyncio
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
 import asyncpg
 from pydantic import BaseModel
 import os
-from pathlib import Path
 from dotenv import load_dotenv
 
 
@@ -58,3 +59,10 @@ async def close_pool():
     if db_pool:
         await db_pool.close()
         print("Database connection pool closed safely.")
+
+@asynccontextmanager
+async def lifespan_db(app: FastAPI):
+    await init_pool()
+    await clean_db()
+    yield
+    await close_pool()
