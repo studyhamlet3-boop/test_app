@@ -7,12 +7,16 @@ Frontend: Vite, React, TypeScript
 
 Backend: Python, FastAPI, Uvicorn
 
+Database: PostgreSQL 18
+
 ## Prerequisites
 Before you begin, ensure you have the following installed:
 
 Node.js (latest LTS)
 
 Python 3.10+
+
+PostgreSQL 18
 
 ## Installation & Setup
 ### 1. Backend (FastAPI)
@@ -29,6 +33,20 @@ pip install -r requirements.txt
 cd ../frontend
 npm install
 ```
+
+### 3. Database Setup
+
+Ensure PostgreSQL is installed and running. Create a new database and user for the application, then run the following query to create the table:
+
+```sql
+CREATE TABLE chat_logs (
+    id SERIAL PRIMARY KEY,
+    prompt TEXT NOT NULL,
+    response TEXT NOT NULL
+);
+```
+### Make sure the DB is up and running before starting the backend, as the backend will attempt to connect to the database on startup.
+
 
 ### Start the Backend:
 
@@ -49,9 +67,16 @@ Proceed to http://localhost:5173 to access the application.
 Note: Remember to create your .env file based on .env.example before running the services.
 Ensure you have the necessary API keys and configurations set up.
 
-### API requirements:
+### env. requirements:
 - OpenAI API key.
 Put your key in the .env file as follows:
 ```bash
+# Database Configuration
+DB_USER=your_postgres_user
+DB_PASSWORD=your_postgres_password
+DB_NAME=your_database_name
+DB_HOST=localhost
+
+# API Keys
 API_KEY=your_openai_api_key_here
 ```
