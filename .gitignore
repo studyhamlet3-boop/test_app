@@ -38,9 +38,10 @@ src/**/__pycache__/
 .vscode/
 list_models.py
 .gitignore.txt
+.gitignore
 
-# --- Environment Variables (if you create them later) ---
+# --- Environment Variables ---
 .env
 
-# --- Python Dependency Files (if you use pip) ---
+# --- Python Dependency Files ---
 # requirements.txt
