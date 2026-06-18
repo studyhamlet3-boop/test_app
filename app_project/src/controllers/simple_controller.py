@@ -21,7 +21,13 @@ async def ask_gemini(request: UserRequest):
         media_type="text/event-stream"
     )
 
-# @router.get("/{random:int}")
+auth_router = APIRouter(prefix="/auth")
 
+@auth_router.post("/login")
+async def login(request: Request):
+    return {"message": "Login successful"}
 
+@auth_router.post("/register")
+async def register(request: Request):
+    return {"message": "Registration successful"}
 

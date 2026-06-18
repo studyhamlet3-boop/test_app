@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from src.controllers.simple_controller import router as simple_router
 from src.controllers.simple_root import router as root_router
-from src.data.genai_cont_db import lifespan_db
+from src.data.main_db import lifespan_db
 from contextlib import asynccontextmanager
 # middleware import
 from fastapi.middleware.cors import CORSMiddleware
