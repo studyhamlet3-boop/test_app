@@ -1,4 +1,4 @@
-import asyncio
+from src.data.main_db import Database
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 import asyncpg
@@ -13,30 +13,8 @@ class ChatEntry(BaseModel): # prompt + response
     # created_at: datetime = Field(default_factory=datetime.utcnow)
 
 
-load_dotenv(dotenv_path="/Users/hhalmlet/Developer/myapp/.env")
-db_pool = None
-
-
-async def init_pool(): # Initiates the pool
-    # Connect using .env
-    global db_pool
-    if db_pool is None:
-        print("Initializing database connection pool...")
-        db_pool = await asyncpg.create_pool(
-        user=os.getenv('DB_USER'),
-        password=os.getenv('DB_PASSWORD'),
-        database=os.getenv('DB_NAME'),
-        host=os.getenv('DB_HOST'),
-        min_size=2, #minimum 2 cons open
-        max_size=10
-        )
-
-async def clean_db():
-    async with db_pool.acquire() as conn:
-        await conn.execute('DELETE FROM chat_logs') # Clear all records from the chat_logs table
-
 async def run(obj: ChatEntry):
-    async with db_pool.acquire() as conn:
+    async with Database.pool.acquire() as conn:
         # Pass the record_id variable into the query
         await conn.execute(
             '''
@@ -48,21 +26,11 @@ async def run(obj: ChatEntry):
         )
 
 async def fetch_all(): # returns ChatEntry object array
-    async with db_pool.acquire() as conn:
-        records = await conn.fetch('SELECT * FROM chat_logs ORDER BY id DESC LIMIT 10') # Fetch the 10 most recent records
-        records = reversed(records)  # Reverse the order to get the most recent entries at the end
-        return [ChatEntry(prompt=record['prompt'], response=record['response']) for record in records]
-
-#TMP function
-async def close_pool():
-    global db_pool
-    if db_pool:
-        await db_pool.close()
-        print("Database connection pool closed safely.")
-
-@asynccontextmanager
-async def lifespan_db(app: FastAPI):
-    await init_pool()
-    await clean_db()
-    yield
-    await close_pool()
+    try:
+        async with Database.pool.acquire() as conn:
+            records = await conn.fetch('SELECT * FROM chat_logs ORDER BY id DESC LIMIT 10') # Fetch the 10 most recent records
+            records = reversed(records)  # Reverse the order to get the most recent entries at the end
+            return [ChatEntry(prompt=record['prompt'], response=record['response']) for record in records]
+    except Exception as e:
+        print(f"Error fetching chat logs: {e}")
+        return []
