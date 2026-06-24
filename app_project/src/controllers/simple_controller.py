@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, Response
 import src.services.genai_handle as genai_handle
 from pydantic import BaseModel
 from fastapi.responses import StreamingResponse
@@ -34,8 +34,19 @@ async def login(request: Request):
     return {"message": "Login successful"}
 
 @auth_router.post("/register")
-async def register(request: regist_info): # work in progress(need to change email to user_id for JWT creation) returns token, catches UserAlreadyExistsError
+async def register(request: regist_info, response: Response): # work in progress(need to change email to user_id for JWT creation) returns token, catches UserAlreadyExistsError
     try:
-        return await register_user(request)
+        token = await register_user(request.email, request.password)
+        
     except UserAlreadyExistsError:
         raise HTTPException(status_code=409, detail="User already exists") # CAN BE UPGRADED "FastAPI: global exception handler" whatever that is
+
+    response.set_cookie(
+        key="access_token",
+        value=token,
+        httponly=True,
+        secure=False,
+        samesite="lax"
+    )
+
+    return {"success": True}

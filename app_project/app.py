@@ -4,8 +4,8 @@ from src.controllers.simple_root import router as root_router
 from src.data.main_db import lifespan_db
 from contextlib import asynccontextmanager
 # middleware import
+from src.middleware.auth_jwt import auth_jwt_middleware
 from fastapi.middleware.cors import CORSMiddleware
-from src.middleware.logger_mid import log_request
 # Temporary imports
 
 @asynccontextmanager
@@ -18,6 +18,7 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(root_router)
 app.include_router(simple_router)
 
+app.middleware("http")(auth_jwt_middleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],

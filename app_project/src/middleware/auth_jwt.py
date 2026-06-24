@@ -1,14 +1,20 @@
-from fastapi import Request
+from fastapi import Request, HTTPException
 from fastapi.responses import JSONResponse
+
 
 async def auth_jwt_middleware(request: Request, call_next):
 
     public_paths = ["/login", "/register"]
+
     if request.url.path in public_paths:
         return await call_next(request)
 
-    auth_header = request.headers.get("Authorization")
-    if auth_header is None or not auth_header.startswith("Bearer "):
-        return JSONResponse(status_code=401, content={"message": "Unauthorized"})
-    token = auth_header.split(" ")[1]
+    token = request.cookies.get("access_token")
+
+    if token is None:
+        return JSONResponse(
+            status_code=409,
+            content={"detail": "Unauthorized"}
+        )
+
     return await call_next(request)

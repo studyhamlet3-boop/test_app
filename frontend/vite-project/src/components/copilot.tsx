@@ -1,4 +1,5 @@
 import Markdown from 'react-markdown';
+import { apiFetch } from "../api/clients";
 import Button from './button'
 import './copilot.css'
 import { useState, useRef } from "react";
@@ -15,15 +16,21 @@ async function handleSubmit() {
 
   if (!message) return;
 
-  const res = await fetch("http://127.0.0.1:8000/users/res", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
+  let res: Response;
+  try {
+    res = await apiFetch("/users/res", {
+      method: "POST",
+      body: JSON.stringify({
       prompt: message
-    })
-  });
+      })
+    }, { redirectOnUnauthorized: true });
+  }
+  catch (error){
+    console.error(error)
+    return;
+  }
+
+
   if (!res.ok) {
     console.error("Failed to fetch response");
     return;
