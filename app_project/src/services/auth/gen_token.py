@@ -1,7 +1,9 @@
 import jwt
 from datetime import datetime, timedelta, timezone
+from dotenv import load_dotenv
+import os
 
-SECRET_KEY = ""
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 def create_token(user_id):
     payload = {

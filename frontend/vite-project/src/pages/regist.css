@@ -35,7 +35,7 @@
 }
 
 .ic2 {
-  margin-top: 30px;
+  margin-top: 50px;
 }
 
 .input {
@@ -52,7 +52,7 @@
 }
 
 .cut {
-  background-color: #15172b;
+  background-color: #181522;
   border-radius: 10px;
   height: 20px;
   left: 20px;
@@ -60,11 +60,15 @@
   top: -20px;
   transform: translateY(0);
   transition: transform 200ms;
-  width: 76px;
+  width: 53px;
 }
 
 .cut-short {
-  width: 50px;
+  width: 76px;
+}
+
+.cut-short_passrep {
+  width: 116px;
 }
 
 .iLabel {
