@@ -1,6 +1,6 @@
 import jwt
 from datetime import datetime, timedelta, timezone
-from app_project.exceptions import InvalidTokenError, TokenExpiredError
+from exceptions import InvalidTokenError, TokenExpiredError
 from dotenv import load_dotenv
 import os
 

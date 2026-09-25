@@ -1,7 +1,7 @@
 from fastapi import Request, HTTPException
-from gen_token import create_token
+from src.services.auth.gen_token import create_token, decode_token
 from fastapi.responses import JSONResponse
-from app_project.exceptions import InvalidTokenError, TokenExpiredError
+from exceptions import InvalidTokenError, TokenExpiredError
 
 # JWT authentication middleware: Requires an "access_token" cookie for most routes.
 # Bypasses token validation for public paths like /login and /register.
@@ -22,15 +22,15 @@ async def auth_jwt_middleware(request: Request, call_next):
         )
 
     try :
-        payload = create_token.decode_token(token)
+        payload = decode_token(token)
     except InvalidTokenError:
         return JSONResponse(
-            status_code=401,
+            status_code=498,
             content={"detail": "Invalid token"}
         )
     except TokenExpiredError:
         return JSONResponse(
-            status_code=401,
+            status_code=498,
             content={"detail": "Token expired"}
         )
     

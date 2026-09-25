@@ -17,7 +17,7 @@ export async function apiFetch( // either fetch or axios, but fetch is built-in
   });
 
   // backend says session invalid
-  if (response.status === 409) {
+  if (response.status === 409 || response.status === 401 || response.status === 498) {
     if (config.redirectOnUnauthorized) {
       window.location.href = "/register"; // force redirect to register page in case of cookie expire
     }
