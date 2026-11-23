@@ -32,6 +32,9 @@ function Regist() {
         console.error("Failed to fetch response");
         return;
       }
+      else{
+        window.location.href = "/";
+      }
     
 
   }
