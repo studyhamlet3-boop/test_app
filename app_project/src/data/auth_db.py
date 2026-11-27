@@ -18,7 +18,7 @@ async def insert_user_db(email: str, password: str): # Inserts a new user record
                 email,
                 password
             )
-async def get_user_id_by_email(email: str): #Returns users id by email: returns int or None
+async def get_user_info_by_email(email: str): #Returns users everything by email: returns dict or None
     async with Database.pool.acquire() as conn:
-        user = await conn.fetchrow('SELECT id FROM users WHERE email = $1', email)
-        return user['id'] if user else None
+        user = await conn.fetchrow('SELECT * FROM users WHERE email = $1', email)
+        return {'id': user['id'], 'email': user['email'], 'password': user['password_hash'], 'verified': user['is_verified']} if user else None #?<---------------Pattern

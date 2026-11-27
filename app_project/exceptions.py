@@ -4,3 +4,5 @@ class InvalidTokenError(Exception):
     pass
 class TokenExpiredError(Exception):
     pass
+class invalidCredentials(Exception):
+    pass

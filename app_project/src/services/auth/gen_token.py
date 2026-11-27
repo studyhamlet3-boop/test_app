@@ -31,7 +31,10 @@ def create_token(user_id: str, roles: Sequence[str]) -> str:
         "aud": "Soma Regist",
         "jti": str(uuid.uuid4()),   #! DB support required
     }
-    return jwt.encode(payload, SECRET_KEY, algorithm="HS256") #? settings.jwt_secret instead of SECRET_KEY
+    token = jwt.encode(payload, SECRET_KEY, algorithm="HS256") #? settings.jwt_secret instead of SECRET_KEY
+    if not token:
+        raise Exception("Token gen failed")
+    return token
 
 
 def decode_token(token: str) -> dict:
